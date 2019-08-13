@@ -21,16 +21,12 @@ export class LoginComponent implements OnInit {
     password: new FormControl('password', [ Validators.required ]),
   })
 
-  ngOnInit() {}
-
+  ngOnInit(): void { }
   onSubmit() {
-    console.log(this.authService.userLogged)
     this.loading = true;
     this.authService.authUser(this.userForm.value).subscribe(
       (data) => {
         this.loading = false;
-        this.api.post('/v1/patrols', { cop_id: 1, inspected: 14661, status: 'opened' })
-        .subscribe((data) => data)
        },
       ({ status, statusText, error }) => {
         this.loading = false;

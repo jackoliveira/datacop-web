@@ -1,0 +1,55 @@
+<mat-card>
+    <div class="row">
+      <div class="col">
+        <mat-card-title>Ocorrência</mat-card-title>
+        <mat-card-subtitle>{{ occurrence?.created_at | date: 'dd/MM/yyyy hh:mm:ss' }}</mat-card-subtitle>
+      </div>
+      <div class="col">
+        <button mat-raised-button (click)="openDialog()" class="float-right">Responder Occurrence</button>
+      </div>
+    </div>
+  <mat-card-content>
+    <div class="row">
+      <div class="col">
+        <h6>Dados do Policial</h6>
+        <p> 
+          Nome: <span>{{ occurrence?.cop.name }}</span>
+          Departamento: <span>{{ occurrence?.department.name }}</span>
+        </p>
+        <p>
+          Descrição: <span>{{ occurrence?.cop.description }}</span>
+          
+        </p>
+        <p>
+          Email: <span>{{ occurrence?.cop.email }}</span>
+        </p>
+        <p>
+          Data de Criação: <span>{{ occurrence?.cop.updated_at | date: 'dd/MM/yyyy hh:mm:ss' }}</span>
+        </p>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row">
+      <div class="col"><h6>Dados da Ocorrência</h6></div>
+    </div>
+    
+    <div class="row">
+      <div class="col">
+        
+      </div>
+      <div class="col">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        Conteúdo: <code>{{ occurrence?.content }}</code>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    
+  </mat-card-actions>
+
+</mat-card>
+<!-- {"id": 1, "content": "O SEXO INFORMADO PARA O BENEFICIARIO NAO CONDIZ O RDP.\n---\nCODIGO: 2820762000001013\nNOME: MARIO LUCIO DE SOUZA JUNIOR\nSEXO: M\nDATA NASCIMENTO: 1981-07-01\nCPF: 05246863603\nRDP: 1\n", "checksum": "5a52f7797e0cc83f41738dbf195c3a50f05c7d6a7325648a9bddd8f28fedf34f", "kind": "severe", "status": "opened", "created_at": "2019-08-12T18:49:42.992Z", "updated_at": "2019-08-12T18:49:42.992Z", "organization": { "id": 1, "name": "Unimed", "status": "active", "created_at": "2019-08-12T18:43:34.037Z", "updated_at": "2019-08-12T18:43:34.037Z" }, "patrol": { "id": 1, "inspected": 14693, "detected": 0, "recurrented": 0, "status": "finished", "created_at": "2019-08-12T18:49:42.749Z", "updated_at": "2019-08-12T18:49:49.332Z" }, "department": { "id": 1, "name": "CAD", "status": "active", "created_at": "2019-08-12T18:44:33.588Z", "updated_at": "2019-08-12T18:44:33.588Z" }, "cop": { "id": 1, "name": "RDP", "email": "rmelo@unimedvc.coop.br", "description": null, "status": "active", "created_at": "2019-08-12T18:47:21.210Z", "updated_at": "2019-08-12T18:47:21.210Z" } } -->

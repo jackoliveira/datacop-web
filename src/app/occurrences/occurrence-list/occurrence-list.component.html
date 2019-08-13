@@ -1,0 +1,14 @@
+<mat-form-field class="example-full-width">
+  <input type="text" placeholder="Pick one" aria-label="Number" matInput [matAutocomplete]="auto" [formControl]="search">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-optgroup *ngFor="let group of options" [label]="group">
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{option}}
+      </mat-option>
+  </mat-optgroup>
+  </mat-autocomplete>
+</mat-form-field>
+
+<ng-container *ngFor="let occurrence of occurrences$ | async">
+  <app-occurrence-list-item [occurrence]="occurrence"></app-occurrence-list-item>
+</ng-container>
