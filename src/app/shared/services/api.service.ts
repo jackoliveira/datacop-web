@@ -35,7 +35,7 @@ export class ApiService {
     this.tokenService.saveSession({ access_token: headers.get('access-token'), client: headers.get('client'), uid: headers.get('uid') })
   }
 
-  public get(path: string, params: string): Observable<any> {
+  public get(path: string, params: string = ''): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}${path}${params}`, this.httpOptions())
       .pipe(tap((data) => { 
         this.saveSession(data)

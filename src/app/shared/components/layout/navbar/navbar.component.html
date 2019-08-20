@@ -1,0 +1,8 @@
+<mat-toolbar color="primary" *ngIf="isLoggedIn$ | async">
+  <div class="container">
+    <span>Datacop</span>
+    <a mat-stroked-button (click)=onLogout()>Logout</a>
+    <a mat-stroked-button [routerLink]="['/occurrences']" routerLinkActive="active">Ocorrências</a>
+    <a mat-stroked-button [routerLink]="['/organizations']" routerLinkActive="active">Organizações</a>
+  </div>
+</mat-toolbar>

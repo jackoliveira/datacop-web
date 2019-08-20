@@ -8,7 +8,7 @@ export class NotificationService {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  private openSnackBar(message: string, action: string = '') {
+  private openSnackBar(message: string, action: string = 'Fechar') {
     this._snackBar.open(message, action, {
       verticalPosition: 'top',
       horizontalPosition: 'right',

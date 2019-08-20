@@ -1,27 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { UsersService } from '../shared/services/users.service';
 import { AuthService } from '../shared/services/auth.service';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from '../shared/services/api.service';
+import { NotificationService } from '../shared/services/notification.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  public errors: string;
+export class LoginComponent {
   public loading: boolean = false;
-  constructor(private formBuilder: FormBuilder, private authService: AuthService,
+  constructor(private formBuilder: FormBuilder,
+              private notificationService: NotificationService,
+              private authService: AuthService,
     private api: ApiService) { }
 
   public userForm = this.formBuilder.group({
     email: new FormControl('admin@example.com', [ Validators.required, Validators.email ]),
-    password: new FormControl('password', [ Validators.required ]),
+    password: new FormControl('password', [ Validators.required, Validators.minLength(8), Validators.maxLength(255) ]),
   })
 
-  ngOnInit(): void { }
+
+  logout() {
+    this.authService.logout();
+  }
+  
   onSubmit() {
     this.loading = true;
     this.authService.authUser(this.userForm.value).subscribe(
@@ -30,7 +34,7 @@ export class LoginComponent implements OnInit {
        },
       ({ status, statusText, error }) => {
         this.loading = false;
-        this.errors = `${error.errors}`;
+        this.notificationService.notify(`${error.errors}`)
       }
     )
   }

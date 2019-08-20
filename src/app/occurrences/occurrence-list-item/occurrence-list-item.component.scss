@@ -1,5 +1,10 @@
 mat-card {
-  margin: 1rem 0px;
+  margin: .3rem 0px;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, .1);
+    transition: ease .3s;
+  }
 }
 
 .badge {
@@ -8,4 +13,13 @@ mat-card {
 
 button {
   margin: 0px .3rem;
+}
+
+section {
+  font-weight: bold;
+}
+
+.title-item {
+  font-weight: normal;
+  color: rgba(0, 0, 0, .7);
 }

@@ -1,0 +1,19 @@
+mat-toolbar {
+  background-color: #00995D !important;
+  a {
+    text-decoration: none;
+    margin-left: .5rem;
+    float: right;
+    color: white;
+    background-color: none;
+    border: none;
+    &:hover {
+      background-color: rgba($color: white, $alpha: .3);
+      color: white;
+    }
+  }
+  .active {
+    background-color: rgba($color: white, $alpha: 1);
+    color: #00995D;
+  }
+} 

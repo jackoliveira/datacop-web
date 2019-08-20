@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OccurrenceRoutingModule } from './occurrence-routing.module';
-import { OccurrencesComponent } from './occurrences.component';
 import { OccurrenceListComponent } from './occurrence-list/occurrence-list.component';
 import { OccurrenceListItemComponent } from './occurrence-list-item/occurrence-list-item.component';
 import { SharedModule } from '../shared/shared.module';
@@ -11,7 +10,6 @@ import { OccurrenceDetailModalComponent } from './occurrence-detail-modal/occurr
 
 @NgModule({
   declarations: [
-    OccurrencesComponent,
     OccurrenceListComponent,
     OccurrenceListItemComponent,
     OccurrenceDetailComponent,

@@ -13,7 +13,4 @@ export class OccurrencesService {
     return this.api.get('/v1/occurrences/', params)
   }
 
-  post(path: string, body: object = {}) {
-    return this.api.post(path, body)
-  }
 }

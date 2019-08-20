@@ -1,9 +1,6 @@
 <form class="form-signin text-center" [formGroup]="userForm" (ngSubmit)="onSubmit()">
 	<img class="mb-4" src="https://www.unimed.coop.br/image/layout_set_logo?img_id=2291082&t=1563640541969" alt="">
 	<h1 class="h3 mb-3 font-weight-normal text-center">DataCop</h1>
-	<div class="alert alert-warning" role="alert" *ngIf="errors">
-		{{ errors }}
-	</div>
 	<mat-form-field>
 		<input matInput placeholder="Email address" type="email" formControlName="email" id="email" required>
 	</mat-form-field>
@@ -12,7 +9,7 @@
 	</mat-form-field>
 	<button mat-stroked-button type="submit" [attr.disabled]="loading && !userForm.valid">
 		Login
-		<ng-container *ngIf="loading && !errors">
+		<ng-container *ngIf="loading">
 			<div class="spinner-border spinner-border-sm" role="status">
 				<span class="sr-only">Loading...</span>
 			</div>

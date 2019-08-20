@@ -5,6 +5,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenService } from '../shared/services/token.service';
 import { NotificationService } from '../shared/services/notification.service';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,20 @@ export class AuthGuard implements CanActivate {
               private tokenService: TokenService,
               private notificationService: NotificationService) {}
 
-  canActivate(): Observable<boolean> | boolean {
-    if(this.authService.userLogged || this.tokenService.getSession()['access-token']) {
-      console.log(this.tokenService.getSession())
-      return true;
-    }
-  
-    this.notificationService.notify('Acesso não permitido para o usuário')
-    this.router.navigate(['/login'])
-    return false;
+  canActivate(
+    // route: ActivatedRouteSnapshot,
+    // state: RouterStateSnapshot
+  ): Observable<boolean> | boolean {
+    return this.authService.isLoggedIn.pipe(
+      take(1),
+      map((isLoggedIn: boolean) => {
+        if (!isLoggedIn) {
+          this.notificationService.notify('Acesso não permitido para o usuário')
+          this.router.navigate(['/login']);
+          return false;
+        }
+        return true;
+      })
+    );
   }
 }
