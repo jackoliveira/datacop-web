@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
-import { Observable, Subject, timer, of, range } from 'rxjs';
+import { Observable, Subject, timer, of, range, merge } from 'rxjs';
 import { OccurrencesService } from 'src/app/shared/services/occurrences.service';
-import { switchMap, map, tap, distinctUntilChanged, debounceTime, catchError, shareReplay, retryWhen, delayWhen, startWith } from 'rxjs/operators';
+import { switchMap, map, tap, distinctUntilChanged, debounceTime, catchError, shareReplay, retryWhen, delayWhen, startWith, filter, concat } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import {
   trigger,
@@ -35,83 +35,36 @@ export class OccurrenceListComponent implements OnInit {
   public loading: boolean = false;
   @Output() occurrence: any
   public occurrences$: Observable<any[]>;
-  public searchTerms = new Subject<string>();
   constructor(private occurrencesService: OccurrencesService,
               private notificationService: NotificationService) { }
   
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  displayedColumns: string[] = ['id', 'department', 'cop', 'status', 'created_at']; 
-  options = ['opened', 'closed', 'canceled'];
-  // Initialize data Source
-  dataSource: any;
-  public handleSearch(params: string) {
-    this.searchTerms.next(params);
-  }
+  search = { text: '', status: '' };
+  statuses = Object.keys({ canceled: 0, opened: 1, closed: 2  })
+  searchField = new FormControl();
+  statusesField = new FormControl();
 
+  get statusesFieldGetter() { return this.statusesField.value }
+  get searchFieldGetter() { return this.searchField.value }
   ngOnInit() {
-    this.occurrences$ = this.searchTerms.pipe(
-      startWith(''),
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(_search => this.occurrencesService.get(`?query[status_cont]=${_search}`)
+    this.occurrences$ = merge(this.statusesField.valueChanges, this.searchField.valueChanges)
         .pipe(
-          map(({ body }) => {
-            console.log(body)
-            return body;
-          }),
-          catchError(_ => of(['error']),
+          startWith(''),
+          debounceTime(300),
+          distinctUntilChanged(),
+          tap((_search) => console.log(_search)),
+          switchMap(_search => this.occurrencesService.get(`?query[id_eq]=${this.searchFieldGetter}&query[status_eq]=${this.statusesFieldGetter}`)
+            .pipe(
+              tap((data) => console.log(data)),
+              map(({ body }) => {
+                return body;
+              }),
+              catchError(_ => of(['error']),
+              )
+            )
+          ),
+          tap((_search) => console.log(_search)),
           )
-        )
-      ),
-    )
   }
 
-  ngAfterContentInit(): void {
-    this.searchTerms.next('');
-  }
+  ngAfterContentInit(): void { }
 }
-
-
-    // this.occurrences$ = this.searchTerms.pipe(
-    //   startWith(''),
-    //   debounceTime(300),
-    //   distinctUntilChanged(),
-    //   switchMap(_search => this.occurrencesService.get(`?query[status_cont]=${_search}`)
-    //     .pipe(
-    //       map(({ body }) => {
-    //         console.log(body)
-    //         return body;
-    //       }),
-    //       catchError(_ => of(['error']),
-    //       )
-    //     )
-    //   ),
-    // )
-
-
-
-//  merge(this.sort.sortChange, this.paginator.page)
-//       .pipe(
-//         startWith({}),
-//         switchMap(() => {
-//           this.isLoadingResults = true;
-//           return this.exampleDatabase!.getRepoIssues(
-//             this.sort.active, this.sort.direction, this.paginator.pageIndex);
-//         }),
-//         map(data => {
-//           // Flip flag to show that loading has finished.
-//           this.isLoadingResults = false;
-//           this.isRateLimitReached = false;
-//           this.resultsLength = data.total_count;
-
-//           return data.items;
-//         }),
-//         catchError(() => {
-//           this.isLoadingResults = false;
-//           // Catch if the GitHub API has reached its rate limit. Return empty data.
-//           this.isRateLimitReached = true;
-//           return observableOf([]);
-//         })
-//       ).subscribe(data => this.data = data);
-//   }
-// }

@@ -46,17 +46,14 @@ export class OccurrenceDetailModalComponent implements OnInit {
       .subscribe(
         (data) => {
         this.loading = false;
-        this.notificationService.notify('Enviado com sucesso')
+        this.notificationService.notify('Enviado com sucesso');
         this.dialogRef.close();
       }, 
       (error) => {
-        console.log(error)
         this.loading = false;
-        this.notificationService.notify(`${error.errors}`)
+        this.notificationService.notify(`${error.errors}`);
       }
     );
-
-    //this.occurrencesService.post('', this.form.value)
   }
 
 }

@@ -44,7 +44,7 @@ export class OccurrenceDetailComponent implements OnInit {
         )
   }
 
-  populateAnswers() {
+  public populateAnswers() {
     this.loadingAnswers = true;
     this.answersService.get(this.occurrence.id)
       .subscribe(({ body }) => {
@@ -57,7 +57,7 @@ export class OccurrenceDetailComponent implements OnInit {
     )
   }
 
-  openDialog(): void {
+  public openDialog(): void {
     const dialogRef = this.dialog.open(OccurrenceDetailModalComponent, {
       width: '700px',
       data: this.occurrence

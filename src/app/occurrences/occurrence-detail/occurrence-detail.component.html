@@ -41,11 +41,14 @@
       </div>
       
       <div class="row">
-        <div class="col">
-          <div class="occurrence-detail">
-            <p>Data de criação: <span>{{ occurrence?.created_at | date: 'dd/MM/yyyy hh:mm:ss' }}</span></p>
-            <p>Prioridade: <span>{{ occurrence?.priority }}</span></p>
-            <p>Tempo limite em dias: <span>{{ occurrence?.sla }}</span></p>
+        <div class="occurrence-detail">
+          <div class="col">
+            <p class="header-detail">
+              Prioridade: <span>{{ occurrence?.priority }}</span>
+              Tempo limite em dias: <span>{{ occurrence?.sla }}</span>
+              Data de criação: <span>{{ occurrence?.created_at | date: 'dd/MM/yyyy hh:mm:ss' }}</span></p>
+          </div>
+           <div class="col">
             <p></p>
             <p>Conteúdo: <code>{{ occurrence?.content }}</code></p>
           </div>
@@ -58,7 +61,7 @@
       </div>
       <ng-template #answersTemplate>
         <h6>Respostas</h6>
-        <mat-list *ngIf="answers; else noContent">
+        <mat-list *ngIf="answers?.length; else noContent">
           <mat-list-item *ngFor="let answer of answers">
             <small mat-line> {{ answer.created_at | date: 'dd/MM/yyyy hh:mm:ss' }} </small>
             <small mat-line> {{ answer.content }} </small>

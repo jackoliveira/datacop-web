@@ -49,6 +49,8 @@ export class OccurrenceListItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.occurrence) {}
+    else { console.error('asdasds')}
   }
 
 }

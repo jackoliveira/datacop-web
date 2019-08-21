@@ -8,7 +8,6 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  public isLogged: boolean = false;
   private loggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(private usersService: UsersService,
@@ -18,24 +17,19 @@ export class AuthService {
     return this.loggedIn.asObservable();
   }
 
-  authUser(user: any): any {
+  public authUser(user: any): any {
     return this.usersService.attemptAuth(user).pipe(
       map((data) => {
-          console.log(data);
           this.loggedIn.next(true);
-          this.isLogged = true;
+          
           this.router.navigate(['/occurrences']);
           return data;
         }
       ),
     )
   }
-
-  public get userLogged(): boolean {
-    return this.isLogged;
-  }
-
-  logout() {
+  
+  public logout(): void {
     this.loggedIn.next(false);
     this.router.navigate(['/login']);
   }

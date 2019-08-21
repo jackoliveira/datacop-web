@@ -22,19 +22,20 @@ export class LoginComponent {
   })
 
 
-  logout() {
+  public logout(): void {
     this.authService.logout();
   }
   
-  onSubmit() {
+  public onSubmit(): void {
     this.loading = true;
     this.authService.authUser(this.userForm.value).subscribe(
       (data) => {
         this.loading = false;
+        this.notificationService.notify(`Logado com sucesso.`);
        },
       ({ status, statusText, error }) => {
         this.loading = false;
-        this.notificationService.notify(`${error.errors}`)
+        this.notificationService.notify(`${error.errors}`);
       }
     )
   }
