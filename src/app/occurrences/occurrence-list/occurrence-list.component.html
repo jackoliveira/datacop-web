@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-md-3">
     <mat-card>
+      
       <mat-form-field>
         <input type="text" matInput placeholder="Buscar" [formControl]="searchField">
       </mat-form-field>
@@ -13,16 +14,35 @@
           {{ status }}
         </mat-radio-button>
       </mat-radio-group>
-      {{ search | json }}
+
+      <mat-form-field>
+        <mat-label>Setor</mat-label>
+        <mat-select [formControl]="departmentsField" multiple>
+          <mat-option *ngFor="let department of departments" [value]="department">{{department}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-stroked-button color="primary"
+        (click)="resetSearch()"
+        *ngIf="statusesFieldGetter || textFieldGetter || departmentsFieldGetter">
+          Limpar Pesquisa
+      </button>
+      
     </mat-card>
 
   </div>
   <div class="col">
-    <mat-spinner diameter="20" *ngIf="loading; else occurrencesTemplate"></mat-spinner>
-    <ng-template #occurrencesTemplate>
+    <div class="text-center">
+      <mat-spinner diameter="20" *ngIf="loading && !noContent"></mat-spinner>
+    </div>
+    <ng-container>
       <app-occurrence-list-item *ngFor="let occurrence of occurrences$ | async" [occurrence]="occurrence"></app-occurrence-list-item>
-    </ng-template>
+      <mat-paginator *ngIf="!loading && !noContent"
+          [length]="contentLength"
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+    </ng-container>
+    <mat-card *ngIf="noContent && !loading">Nenhuma ocorrência encontrada.</mat-card>
   </div>
 </div>
-
-{{ errors | json }}

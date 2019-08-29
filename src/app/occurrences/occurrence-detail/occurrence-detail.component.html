@@ -7,7 +7,7 @@
           </mat-card-title>
         </div>
         <div class="col">
-          <button mat-stroked-button color="primary" (click)="openDialog()" class="float-right" [disabled]="occurrence?.status != 'opened'">Responder</button>
+          <button mat-stroked-button color="primary" (click)="openDialog()" class="float-right" [disabled]="occurrence?.attributes.status != 'opened'">Responder</button>
         </div>
       </div>
     <mat-card-content>
@@ -43,14 +43,19 @@
       <div class="row">
         <div class="occurrence-detail">
           <div class="col">
-            <p class="header-detail">
-              Prioridade: <span>{{ occurrence?.priority }}</span>
-              Tempo limite em dias: <span>{{ occurrence?.sla }}</span>
-              Data de criação: <span>{{ occurrence?.created_at | date: 'dd/MM/yyyy hh:mm:ss' }}</span></p>
+            <div class="header-detail">
+              <p>
+                <span matBadge="4" matBadgeOverlap="false" matBadgeColor="accent">Text with a badge</span>
+              </p>
+              <mat-icon matTooltip="Prioridade">priority_high</mat-icon><span>{{ occurrence?.priority }}</span>
+              <mat-icon matTooltip="Tempo limite em dias">alarm</mat-icon><span>{{ occurrence?.sla }}</span>
+              <mat-icon matTooltip="Data de criação">access_time</mat-icon><span>{{ occurrence?.created_at | date: 'dd/MM/yyyy hh:mm:ss' }}</span></div>
           </div>
            <div class="col">
-            <p></p>
-            <p>Conteúdo: <code>{{ occurrence?.content }}</code></p>
+            <p>Conteúdo: </p>
+              <span>
+                <pre>{{ occurrence?.content }}</pre>
+              </span>
           </div>
         </div>
       </div>
@@ -63,8 +68,8 @@
         <h6>Respostas</h6>
         <mat-list *ngIf="answers?.length; else noContent">
           <mat-list-item *ngFor="let answer of answers">
-            <small mat-line> {{ answer.created_at | date: 'dd/MM/yyyy hh:mm:ss' }} </small>
-            <small mat-line> {{ answer.content }} </small>
+            <small mat-line> {{ answer?.created_at | date: 'dd/MM/yyyy hh:mm:ss' }} </small>
+            <small mat-line> {{ answer?.content }} </small>
             <div class="float-right">
               <small>{{ answer.user.email }}</small>
             </div>

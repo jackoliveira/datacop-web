@@ -1,5 +1,5 @@
-mat-toolbar {
-  background-color: #00995D !important;
+.first-row { 
+  background-color: #00995D; 
   a {
     text-decoration: none;
     margin-left: .5rem;
@@ -16,4 +16,12 @@ mat-toolbar {
     background-color: rgba($color: white, $alpha: 1);
     color: #00995D;
   }
-} 
+}
+
+.second-row {
+  background: rgba($color: #00995d, $alpha: .6);
+  height: 2rem;
+  .mat-icon-button {
+    outline: none;
+  }
+}

@@ -29,9 +29,10 @@ export class OccurrenceDetailComponent implements OnInit {
   ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id')
       this.occurrencesService.get(id)
-        .subscribe(({ body }) => {
+        .subscribe(({ body: { data } }) => {
+          console.log(data)
           // Get Occurrence
-          this.occurrence = body;
+          this.occurrence = data;
 
           // Get Answers of that occurrence
           this.populateAnswers();
@@ -47,9 +48,9 @@ export class OccurrenceDetailComponent implements OnInit {
   public populateAnswers() {
     this.loadingAnswers = true;
     this.answersService.get(this.occurrence.id)
-      .subscribe(({ body }) => {
+      .subscribe(({ body: { data } }) => {
         this.loadingAnswers = false;
-        this.answers = body;
+        this.answers = data;
     }, ({ status, statusText, error }) => {
       this.loadingAnswers = false;
       // this.notificationService.notify('Nenhuma resposta encontrada.')

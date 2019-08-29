@@ -5,11 +5,6 @@ import { Component, OnChanges } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnChanges {
+export class AppComponent {
   title = 'datacop-web';
-
-
-  ngOnChanges(change) {
-    console.log(change)
-  }
 }

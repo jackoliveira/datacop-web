@@ -32,39 +32,57 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class OccurrenceListComponent implements OnInit {
   public errors: any;
-  public loading: boolean = false;
-  @Output() occurrence: any
+  public loading: boolean = true;
+  public noContent: boolean = false;
+  public contentLength: number;
+  @Output() occurrence: any;
   public occurrences$: Observable<any[]>;
   constructor(private occurrencesService: OccurrencesService,
               private notificationService: NotificationService) { }
   
-  search = { text: '', status: '' };
-  statuses = Object.keys({ canceled: 0, opened: 1, closed: 2  })
-  searchField = new FormControl();
-  statusesField = new FormControl();
+  statuses = Object.keys({ cancelado: 0, aberto: 1, fechado: 2 })
+  departments = ['Department Default', 'GED', 'MKT', 'CTE'];
+  searchField = new FormControl('');
+  statusesField = new FormControl('');
+  departmentsField = new FormControl('');
 
+  resetSearch() {
+    this.searchField.setValue('')
+    this.statusesField.setValue('')
+    this.departmentsField.setValue('')
+  }
   get statusesFieldGetter() { return this.statusesField.value }
-  get searchFieldGetter() { return this.searchField.value }
+  get textFieldGetter() { return this.searchField.value }
+  get departmentsFieldGetter() { return this.departmentsField.value }
+  
   ngOnInit() {
-    this.occurrences$ = merge(this.statusesField.valueChanges, this.searchField.valueChanges)
+    this.occurrences$ = merge(
+      this.statusesField.valueChanges,
+      this.searchField.valueChanges,
+      this.departmentsField.valueChanges)
         .pipe(
           startWith(''),
-          debounceTime(300),
+          debounceTime(500),
           distinctUntilChanged(),
-          tap((_search) => console.log(_search)),
-          switchMap(_search => this.occurrencesService.get(`?query[id_eq]=${this.searchFieldGetter}&query[status_eq]=${this.statusesFieldGetter}`)
+          tap(() => { this.noContent = false; this.loading = true; }),
+          switchMap(_search => this.occurrencesService.get(`?query[content_cont]=${this.textFieldGetter}&query[status_eq]=${this.statusesFieldGetter}&query[department_name_eq]=${this.departmentsFieldGetter}`)
             .pipe(
-              tap((data) => console.log(data)),
-              map(({ body }) => {
-                return body;
+              map(({ body: { data } }) => {
+                console.log(data)
+                this.loading = false;
+                this.contentLength = data.length
+                if (this.contentLength == 0) {
+                  this.noContent = true;
+                }
+                return data;
               }),
               catchError(_ => of(['error']),
               )
             )
           ),
-          tap((_search) => console.log(_search)),
-          )
+        )
   }
 
-  ngAfterContentInit(): void { }
+  ngAfterContentInit(): void {
+  }
 }

@@ -8,7 +8,7 @@ import { LoginComponent } from '../login/login.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 
-const components = [ LoginComponent, NavbarComponent , FooterComponent ];
+const components = [ LoginComponent, NavbarComponent, FooterComponent ];
 const modules = [ CommonModule, HttpClientModule, FormsModule, ReactiveFormsModule, MaterialModule ];
 
 @NgModule({

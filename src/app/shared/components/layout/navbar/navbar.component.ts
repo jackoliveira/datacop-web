@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Subject, Observable } from 'rxjs';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-
-interface NavLinks {
-  path: string;
-  name: string;
-}
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -15,16 +11,21 @@ interface NavLinks {
 })
 export class NavbarComponent implements OnInit {
 
-  isLoggedIn$: Observable<boolean>;                 
+  isLoggedIn$: Observable<any>;
 
   constructor(private authService: AuthService,
-              private notificationService: NotificationService) { }
+              private notificationService: NotificationService) {
+                const currentUser = this.authService.currentUserValue;
+                this.isLoggedIn$ = this.authService.currentUser;
+              }
+  
   ngOnInit() {
-    this.isLoggedIn$ = this.authService.isLoggedIn;
+    this.isLoggedIn$.subscribe((data) => {
+      // console.log(data)
+    })
   }
   onLogout(){
     this.authService.logout();    
     this.notificationService.notify(`Logout realizado com sucesso.`);
-                 
   }
 }

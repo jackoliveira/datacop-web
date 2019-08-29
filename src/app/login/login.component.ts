@@ -3,25 +3,33 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { ApiService } from '../shared/services/api.service';
 import { NotificationService } from '../shared/services/notification.service';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   public loading: boolean = false;
+  public errors: any;
   constructor(private formBuilder: FormBuilder,
               private notificationService: NotificationService,
               private authService: AuthService,
-    private api: ApiService) { }
+              private location: Router
+              ) { }
+
+  ngOnInit(): void {
+  }
 
   public userForm = this.formBuilder.group({
     email: new FormControl('admin@example.com', [ Validators.required, Validators.email ]),
     password: new FormControl('password', [ Validators.required, Validators.minLength(8), Validators.maxLength(255) ]),
   })
 
-
+  
   public logout(): void {
     this.authService.logout();
   }
@@ -33,9 +41,10 @@ export class LoginComponent {
         this.loading = false;
         this.notificationService.notify(`Logado com sucesso.`);
        },
-      ({ status, statusText, error }) => {
+      (err) => {
+        this.userForm.reset();
+        this.errors = err.errors || err.statusText;
         this.loading = false;
-        this.notificationService.notify(`${error.errors}`);
       }
     )
   }

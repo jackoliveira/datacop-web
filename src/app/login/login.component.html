@@ -1,13 +1,14 @@
-<form class="form-signin text-center" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+<form class="form-signin text-center mat-elevation-z2" [formGroup]="userForm" (ngSubmit)="onSubmit()">
 	<img class="mb-4" src="https://www.unimed.coop.br/image/layout_set_logo?img_id=2291082&t=1563640541969" alt="">
 	<h1 class="h3 mb-3 font-weight-normal text-center">DataCop</h1>
+	{{ errors }}
 	<mat-form-field>
 		<input matInput placeholder="Email address" type="email" formControlName="email" id="email" required>
 	</mat-form-field>
 	<mat-form-field>
 		<input matInput placeholder="Password" type="password" formControlName="password" required>
 	</mat-form-field>
-	<button mat-stroked-button type="submit" [attr.disabled]="loading && !userForm.valid">
+	<button mat-stroked-button type="submit" [attr.disabled]="!userForm.valid">
 		Login
 		<ng-container *ngIf="loading">
 			<div class="spinner-border spinner-border-sm" role="status">

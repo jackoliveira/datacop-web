@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivate, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from '../shared/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenService } from '../shared/services/token.service';
@@ -14,22 +14,16 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService,
               private router: Router,
               private tokenService: TokenService,
-              private notificationService: NotificationService) {}
+              private notificationService: NotificationService) {
+               }
 
   canActivate(
-    // route: ActivatedRouteSnapshot,
-    // state: RouterStateSnapshot
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-    return this.authService.isLoggedIn.pipe(
-      take(1),
-      map((isLoggedIn: boolean) => {
-        if (!isLoggedIn) {
-          this.notificationService.notify('Acesso não permitido para o usuário')
-          this.router.navigate(['/login']);
-          return false;
-        }
-        return true;
-      })
-    );
+    const currentUser = this.authService.currentUserValue;
+    if (currentUser) { return true; }
+
+    return false;
   }
 }

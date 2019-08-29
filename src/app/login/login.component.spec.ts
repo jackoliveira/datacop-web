@@ -11,13 +11,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/services/auth.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { OccurrencesComponent } from '../occurrences/occurrences.component';
-import { OccurrenceModule } from '../occurrences/occurrence.module';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let testUser = { email: 'admin@example.com', password: 'password' };
+  let route: ActivatedRouteSnapshot;
+  let state: RouterStateSnapshot;
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ],
@@ -26,11 +27,7 @@ describe('LoginComponent', () => {
         BrowserAnimationsModule,
         BrowserModule,
         AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
         SharedModule,
-        HttpClientModule, 
-        OccurrenceModule
       ]
     })
     .compileComponents();
@@ -53,7 +50,7 @@ describe('LoginComponent', () => {
 
   it('user login should success', inject([AuthService, AuthGuard], (service: AuthService, authGuard: AuthGuard) => {
     const response = service.authUser({ email: 'admin@example.com', password: 'password' })
-      .subscribe((data) => { return authGuard.canActivate() })
+      .subscribe((data) => { return authGuard.canActivate(route, state) })
 
     expect(response).toBeTruthy();
   }));
@@ -62,7 +59,7 @@ describe('LoginComponent', () => {
     service.authUser({ email: 'failed@example.com', password: 'password' })
     .subscribe(
       (data) => {},
-      (error) => { return expect(authGuard.canActivate()).toBeFalsy(); }
+      (error) => { return expect(authGuard.canActivate(route, state)).toBeFalsy(); }
     )
   }));
 

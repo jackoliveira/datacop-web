@@ -44,7 +44,7 @@ export class OccurrenceDetailModalComponent implements OnInit {
     this.loading = true;
     this.answersService.save(this.data.id, this.form.value)
       .subscribe(
-        (data) => {
+        ({ data }) => {
         this.loading = false;
         this.notificationService.notify('Enviado com sucesso');
         this.dialogRef.close();
